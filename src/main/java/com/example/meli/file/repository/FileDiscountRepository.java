@@ -1,7 +1,8 @@
 package com.example.meli.file.repository;
 
+import com.example.meli.domain.model.Discount;
 import com.example.meli.domain.model.Product;
-import com.example.meli.domain.repository.ProductRepository;
+import com.example.meli.domain.repository.DiscountRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -10,27 +11,19 @@ import org.springframework.stereotype.Repository;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class FileProductRepository implements ProductRepository {
+public class FileDiscountRepository implements DiscountRepository {
 
     private final ObjectMapper mapper;
 
     @Override
-    public List<Product> findAll() {
-        try (InputStream input = getClass().getResourceAsStream("/products.json")) {
+    public List<Discount> loadAll() {
+        try (InputStream input = getClass().getResourceAsStream("/discounts.json")) {
             return mapper.readValue(input, new TypeReference<>() {});
         } catch (Exception e) {
             return Collections.emptyList();
         }
-    }
-
-    @Override
-    public Optional<Product> findById(String id) {
-        return findAll().stream()
-                .filter(p -> p.getId().equals(id))
-                .findFirst();
     }
 }
