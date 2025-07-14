@@ -4,6 +4,8 @@ import com.example.meli.domain.ProductNotFoundException;
 import com.example.meli.domain.model.Product;
 import com.example.meli.dto.ProductDTO;
 import com.example.meli.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +19,13 @@ import java.util.stream.Collectors;
 @RequestMapping("/products")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Produtos", description = "Endpoints relacionados a produtos")
 public class ProductController {
 
     private final ProductService service;
 
     @GetMapping
+    @Operation(summary = "Listar todos os produtos")
     public ResponseEntity<List<ProductDTO>> getAll() {
 
         List<Product> product = service.getAllProducts();
@@ -35,6 +39,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar produto por ID")
     public ResponseEntity<ProductDTO> getById(@PathVariable String id) {
         Product product = service.getById(id)
                 .orElseThrow(() -> new ProductNotFoundException(id));
@@ -45,6 +50,7 @@ public class ProductController {
 
 
     @GetMapping("/discounts-file")
+    @Operation(summary = "Listar produtos com desconto baseado no JSON")
     public ResponseEntity<List<ProductDTO>> getFileDiscounts() {
         List<Product> products = service.getProductsDiscountFromFile();
         List<ProductDTO> dtos = products.stream()
@@ -55,6 +61,7 @@ public class ProductController {
 
     //implantar tratamento para desconto muito alto
     @GetMapping("/discounted")
+    @Operation(summary = "Listar produtos com desconto percentual")
     public ResponseEntity<List<ProductDTO>> getWithGlobalDiscount(@RequestParam double percent) {
         List<Product> products = service.getProductsDiscountUrl(percent);
         List<ProductDTO> dtos = products.stream()
