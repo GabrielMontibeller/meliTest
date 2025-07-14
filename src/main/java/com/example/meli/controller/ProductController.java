@@ -52,21 +52,21 @@ public class ProductController {
     @GetMapping("/discounts-file")
     @Operation(summary = "Listar produtos com desconto baseado no JSON")
     public ResponseEntity<List<ProductDTO>> getFileDiscounts() {
-        List<Product> products = service.getProductsDiscountFromFile();
-        List<ProductDTO> dtos = products.stream()
+        List<Product> product = service.getProductsDiscountFromFile();
+        List<ProductDTO> productDto = product.stream()
                 .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice()))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(productDto);
     }
 
     //implantar tratamento para desconto muito alto
     @GetMapping("/discounted")
     @Operation(summary = "Listar produtos com desconto percentual")
     public ResponseEntity<List<ProductDTO>> getWithGlobalDiscount(@RequestParam double percent) {
-        List<Product> products = service.getProductsDiscountUrl(percent);
-        List<ProductDTO> dtos = products.stream()
+        List<Product> product = service.getProductsDiscountUrl(percent);
+        List<ProductDTO> productDto = product.stream()
                 .map(p -> new ProductDTO(p.getId(), p.getName(), p.getPrice()))
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(dtos);
+        return ResponseEntity.ok(productDto);
     }
 }

@@ -39,13 +39,14 @@ public class ProductService {
     }
 
     public List<Product> getProductsDiscountFromFile() {
-        List<Discount> rules = discountRepository.loadAll();
+        log.info("Buscando Produtos com disconto no arquivo");
+        List<Discount> discountsRepository = discountRepository.loadAll();
         return repository.findAll().stream()
                 .map(product -> {
-                    Optional<Discount> rule = rules.stream()
+                    Optional<Discount> discounts = discountsRepository.stream()
                             .filter(r -> r.getProductId().equals(product.getId()))
                             .findFirst();
-                    double discount = rule.map(Discount::getDiscount).orElse(0.0);
+                    double discount = discounts.map(Discount::getDiscount).orElse(0.0);
                     double discountedPrice = product.getPrice() * (1 - discount / 100);
                     return new Product(product.getId(), product.getName(), discountedPrice);
                 })
