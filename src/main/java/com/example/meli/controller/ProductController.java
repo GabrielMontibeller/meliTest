@@ -1,6 +1,6 @@
 package com.example.meli.controller;
 
-import com.example.meli.domain.ProductNotFoundException;
+import com.example.meli.exception.ProductNotFoundException;
 import com.example.meli.domain.model.Product;
 import com.example.meli.dto.ProductDTO;
 import com.example.meli.service.ProductService;
